@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Train Model</title>
+    <style>
+        .input {
+            border: none;
+            outline: none;
+            border-radius: 15px;
+            padding: 1em;
+            background-color: #ccc;
+            box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
+            width: 100%;
+            height: 150px;
+            transition: 300ms ease-in-out;
+        }
+
+        .input:focus {
+            background-color: white;
+            transform: scale(1.05);
+            box-shadow: 13px 13px 100px #969696, -13px -13px 100px #ffffff;
+        }
+
+        button {
+            padding: 15px 25px;
+            border: unset;
+            border-radius: 15px;
+            color: #212121;
+            z-index: 1;
+            background: #e8e8e8;
+            position: relative;
+            font-weight: 1000;
+            font-size: 17px;
+            box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+            transition: all 250ms;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            border-radius: 15px;
+            background-color: #212121;
+            z-index: -1;
+            box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+            transition: all 250ms;
+        }
+
+        button:hover {
+            color: #e8e8e8;
+        }
+
+        button:hover::before {
+            width: 100%;
+        }
+
+        .main {
+            display: flex;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-color: #f3f3f3eb;
+        }
+
+        #loader {
+            display: none; /* Initially hide the loader */
+            width: 120px;
+            height: 150px;
+            background-color: #fff;
+            background-repeat: no-repeat;
+            background-image: linear-gradient(#ddd 50%, #bbb 51%), linear-gradient(#ddd, #ddd), linear-gradient(#ddd, #ddd), radial-gradient(ellipse at center, #aaa 25%, #eee 26%, #eee 50%, #0000 55%), radial-gradient(ellipse at center, #aaa 25%, #eee 26%, #eee 50%, #0000 55%), radial-gradient(ellipse at center, #aaa 25%, #eee 26%, #eee 50%, #0000 55%);
+            background-position: 0 20px, 45px 0, 8px 6px, 55px 3px, 75px 3px, 95px 3px;
+            background-size: 100% 4px, 1px 23px, 30px 8px, 15px 15px, 15px 15px, 15px 15px;
+            position: relative;
+            border-radius: 6%;
+            animation: shake 3s ease-in-out infinite;
+            transform-origin: 60px 180px;
+        }
+
+        #loader:before {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 100%;
+            width: 7px;
+            height: 5px;
+            background: #aaa;
+            border-radius: 0 0 4px 4px;
+            box-shadow: 102px 0 #aaa;
+        }
+
+        #loader:after {
+            content: "";
+            position: absolute;
+            width: 95px;
+            height: 95px;
+            left: 0;
+            right: 0;
+            margin: auto;
+            bottom: 20px;
+            background-color: #bbdefb;
+            background-image: linear-gradient( to right, #0004 0%, #0004 49%, #0000 50%, #0000 100% ), linear-gradient(135deg, #64b5f6 50%, #607d8b 51%);
+            background-size: 30px 100%, 90px 80px;
+            border-radius: 50%;
+            background-repeat: repeat, no-repeat;
+            background-position: 0 0;
+            box-sizing: border-box;
+            border: 10px solid #DDD;
+            box-shadow: 0 0 0 4px #999 inset, 0 0 6px 6px #0004 inset;
+            animation: spin 3s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(360deg); }
+            75% { transform: rotate(750deg); }
+            100% { transform: rotate(1800deg); }
+        }
+
+        @keyframes shake {
+            65%, 80%, 88%, 96% { transform: rotate(0.5deg); }
+            50%, 75%, 84%, 92% { transform: rotate(-0.5deg); }
+            0%, 50%, 100% { transform: rotate(0); }
+        }
+    </style>
+    <script>
+        function showLoader() {
+            document.getElementById('loader').style.display = 'block';
+            document.getElementById('formContent').style.display = 'none'; // Hide form content
+        }
+    </script>
+</head>
+<body>
+    <div class="main">
+        <div id="loader"></div>
+        <div id="formContent">
+            <h1>Train Text Generation Model</h1>
+            <form action="/train" method="POST" onsubmit="showLoader()">
+                <br><br>
+                <textarea id="data" name="data" type="text" autocomplete="off" class="input" placeholder="Enter text data for training..."></textarea>
+                <br><br>
+                <button type="submit">Train Model</button>
+            </form>
+            {% if error %}
+                <p style="color:red;">{{ error }}</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

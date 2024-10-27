@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generate Text</title>
+    <style>
+        .input {
+            border: none;
+            outline: none;
+            border-radius: 15px;
+            padding: 1em;
+            background-color: #ccc;
+            box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
+            transition: 300ms ease-in-out;
+        }
+
+        .input:focus {
+            background-color: white;
+            transform: scale(1.05);
+            box-shadow: 13px 13px 100px #969696, -13px -13px 100px #ffffff;
+        }
+
+        button {
+            padding: 15px 25px;
+            border: unset;
+            border-radius: 15px;
+            color: #212121;
+            background: #e8e8e8;
+            font-weight: 1000;
+            font-size: 17px;
+            box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+            transition: all 250ms;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            border-radius: 15px;
+            background-color: #212121;
+            transition: all 250ms;
+        }
+
+        button:hover {
+            color: #e8e8e8;
+        }
+
+        button:hover::before {
+            width: 100%;
+        }
+
+        .main {
+            display: flex;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background-color: #f3f3f3eb;
+        }
+        #loader {
+            display: none;
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #212121;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script>
+        function showLoader() {
+            document.getElementById('loader').style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <div class="main">
+        <div id="loader"></div>
+        <div>
+            <h1>Generate Text</h1>
+            <form action="/generate" method="POST" onsubmit="showLoader()">
+                <label for="text">Enter Starting Text:</label><br>
+                <input type="text" id="text" class="input" name="text" placeholder="Enter starting text..." required><br><br>
+                <label for="num_words">Number of Words to Generate:</label><br>
+                <input type="number" class="input" id="num_words" name="num_words" value="10" min="1"><br><br>
+                
+                <button type="submit">Generate</button>
+            </form>
+
+            {% if generated_text %}
+                <h2>Generated Text:</h2>
+                <p>{{ generated_text }}</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
